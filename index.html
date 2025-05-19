@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>نموذج تقييم الضيف</title>
+  <style>
+    body {
+      font-family: 'Tahoma', sans-serif;
+      background: #f3f3f3;
+      padding: 20px;
+    }
+    .container {
+      max-width: 600px;
+      margin: auto;
+      background: white;
+      padding: 25px;
+      border-radius: 15px;
+      box-shadow: 0 0 10px #ccc;
+    }
+    h2 {
+      text-align: center;
+      margin-bottom: 25px;
+    }
+    label {
+      display: block;
+      margin: 10px 0 5px;
+    }
+    select, input[type="text"], input[type="email"] {
+      width: 100%;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      margin-bottom: 15px;
+    }
+    button {
+      width: 100%;
+      padding: 12px;
+      background: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #45a049;
+    }
+    .success {
+      background-color: #d4edda;
+      padding: 10px;
+      text-align: center;
+      border-radius: 8px;
+      margin-top: 15px;
+      color: #155724;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>نموذج تقييم الضيف</h2>
+    <form id="feedbackForm">
+      <label for="roomNumber">رقم الغرفة</label>
+      <input type="text" id="roomNumber" name="roomNumber" pattern="^[4-5][0-9]{3}$" required placeholder="مثال: 4123">
+
+      <label>الإفطار</label>
+      <select name="breakfast" required>
+        <option value="">اختر تقييمًا</option>
+        <option value="ممتاز">ممتاز</option>
+        <option value="جيد">جيد</option>
+        <option value="مقبول">مقبول</option>
+        <option value="ضعيف">ضعيف</option>
+      </select>
+
+      <label>الغداء</label>
+      <select name="lunch" required>
+        <option value="">اختر تقييمًا</option>
+        <option value="ممتاز">ممتاز</option>
+        <option value="جيد">جيد</option>
+        <option value="مقبول">مقبول</option>
+        <option value="ضعيف">ضعيف</option>
+      </select>
+
+      <label>العشاء</label>
+      <select name="dinner" required>
+        <option value="">اختر تقييمًا</option>
+        <option value="ممتاز">ممتاز</option>
+        <option value="جيد">جيد</option>
+        <option value="مقبول">مقبول</option>
+        <option value="ضعيف">ضعيف</option>
+      </select>
+
+      <label>النظافة</label>
+      <select name="cleanliness" required>
+        <option value="">اختر تقييمًا</option>
+        <option value="ممتاز">ممتاز</option>
+        <option value="جيد">جيد</option>
+        <option value="مقبول">مقبول</option>
+        <option value="ضعيف">ضعيف</option>
+      </select>
+
+      <label>البارات</label>
+      <select name="bars" required>
+        <option value="">اختر تقييمًا</option>
+        <option value="ممتاز">ممتاز</option>
+        <option value="جيد">جيد</option>
+        <option value="مقبول">مقبول</option>
+        <option value="ضعيف">ضعيف</option>
+      </select>
+
+      <label>الترفيه</label>
+      <select name="entertainment" required>
+        <option value="">اختر تقييمًا</option>
+        <option value="ممتاز">ممتاز</option>
+        <option value="جيد">جيد</option>
+        <option value="مقبول">مقبول</option>
+        <option value="ضعيف">ضعيف</option>
+      </select>
+
+      <label for="email">البريد الإلكتروني (اختياري)</label>
+      <input type="email" id="email" name="email" placeholder="example@email.com">
+
+      <button type="submit">إرسال التقييم</button>
+      <div class="success" id="successMsg" style="display:none;">تم إرسال التقييم بنجاح!</div>
+    </form>
+  </div>
+
+  <script>
+    const form = document.getElementById('feedbackForm');
+    const successMsg = document.getElementById('successMsg');
+
+    form.addEventListener('submit', e => {
+      e.preventDefault();
+
+      const data = {
+        roomNumber: form.roomNumber.value,
+        breakfast: form.breakfast.value,
+        lunch: form.lunch.value,
+        dinner: form.dinner.value,
+        cleanliness: form.cleanliness.value,
+        bars: form.bars.value,
+        entertainment: form.entertainment.value,
+        email: form.email.value
+      };
+
+      fetch('https://script.google.com/macros/s/AKfycbwcwbmgxjzx0hQFFbbaoDGKu27VTY6NmranHHausV68zUKkSuPsyT8yXJHwghbCg4A/exec', {  // ← ضع رابط Google Apps Script هنا
+        method: 'POST',
+        body: JSON.stringify(data),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+      .then(res => res.json())
+      .then(response => {
+        if (response.result === "success") {
+          successMsg.style.display = 'block';
+          form.reset();
+        }
+      })
+      .catch(err => {
+        alert("حدث خطأ أثناء الإرسال");
+        console.error(err);
+      });
+    });
+  </script>
+</body>
+</html>
